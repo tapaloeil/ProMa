@@ -29,7 +29,7 @@ urlpatterns = i18n_patterns(
     url(r'^tinymce/',include('tinymce.urls')),
     url(r'^rosetta/',include('rosetta.urls')),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'', include('frontend.urls')),
+    url(r'^frontend/', include('frontend.urls')),
 )
 
 if settings.DEBUG:
