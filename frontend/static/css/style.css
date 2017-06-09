@@ -7057,6 +7057,22 @@ body {
   .callout-success h4 {
     color: #4dbd74; }
 
+.callout-done {
+  color: grey;
+  font-style: italic;
+}
+.callout-done div{
+  text-decoration:line-through;
+}
+
+.callout small{
+  display: none;
+}
+
+.callout-done small{
+  display: block;
+}
+
 .card {
   margin-bottom: 1.5rem; }
 
@@ -8769,6 +8785,29 @@ hr.transparent {
 
 .b-l-2 {
   border-left: 2px solid #cfd8dc !important; }
+
+.todofilter-ul {
+    list-style: none;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.todofilter-ul li {
+    display: inline;
+}
+
+.todofilter-ul li a{
+    color: inherit;
+    margin: 3px;
+    padding: 3px 7px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.todofilter-ul li a.selected {
+    border-color: rgba(175, 47, 47, 0.2);
+}
 
 @media (max-width: 575px) {
   .d-down-none {

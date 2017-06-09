@@ -350,12 +350,12 @@ $(function(){
       }
     ]
   };
-  var ctx = $('#social-box-chart-2').get(0).getContext('2d');
+ /* var ctx = $('#social-box-chart-2').get(0).getContext('2d');
   var socialBoxChart2 = new Chart(ctx, {
     type: 'line',
     data: data2,
     options: options
-  });
+  });*/
 
   var data3 = {
     labels: labels,

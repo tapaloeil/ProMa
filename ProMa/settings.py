@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
     'Project',
     "todo",
+    "Scheduling",
     "frontend",
 
     'tinymce',

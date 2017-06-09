@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 def dashboard(request):
-	return render(request, 'frontend/index.html', {})
+    return render(request, 'frontend/index.html', {})
 
 def components_buttons(request):
     return render(request, 'frontend/components-buttons.html',{})

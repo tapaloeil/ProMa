@@ -30,6 +30,8 @@ urlpatterns = i18n_patterns(
     url(r'^rosetta/',include('rosetta.urls')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^frontend/', include('frontend.urls')),
+    url(r'^todo/', include('todo.urls')),
+    url(r'^scheduling/', include('Scheduling.urls')),
 )
 
 if settings.DEBUG:

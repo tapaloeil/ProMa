@@ -1,0 +1,53 @@
+{% load static %}
+			<form action="" method="post">{% csrf_token %}
+            <div class="tab-content">
+            	<ul class="todofilter-ul">
+					<li>
+						<a class="todo-filters" data-href-option="active" href="#">Active</a>
+					</li>
+					<li>
+						<a class="todo-filters" data-href-option="all" href="#">All</a>
+					</li>
+					<li>
+						<a class="todo-filters" data-href-option="inactive" href="#">Completed</a>
+					</li>
+            	</ul>
+                <div class="tab-pane active" id="todolist" role="tabpanel" data-href="{% url 'api_get_todo_list' %}">
+            	{% for item in todo %}
+                    <div class="callout {{ item.get_priority_html_class }} m-0 py-3 {% if item.Done %}callout-done{% endif %}">
+                        <div>
+	                       	<label class="switch switch-xs switch-3d switch-secondary">
+		                        <input type="checkbox" class="switch-input" {% if item.Done %} checked="" {% endif %} data-href="{% url 'api_todo_detail' item.id  %}" data-id="{{ item.id }}">
+		                        <span class="switch-label" data-on="" data-off=""></span>
+		                        <span class="switch-handle"></span>
+		                    </label>
+                            <strong>{{ item.Description }}</strong>
+                        </div>
+                        <small>{{ item.Completed }}</small>
+                    </div>
+                    <hr class="mx-3 my-0">
+            	{% endfor %}
+                </div>
+            </div>
+            </form>
+        <script type="text/javascript">
+        	function getCookie(name) {
+			    var cookieValue = null;
+			    if (document.cookie && document.cookie !== '') {
+			        var cookies = document.cookie.split(';');
+			        for (var i = 0; i < cookies.length; i++) {
+			            var cookie = jQuery.trim(cookies[i]);
+			            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+			                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			                break;
+			            }
+			        }
+			    }
+			    return cookieValue;
+			}
+
+			function csrfSafeMethod(method) {
+			    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+			}
+        </script>
+        <script src="{% static 'js/todo.js' %}"></script>
