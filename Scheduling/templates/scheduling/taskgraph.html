@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load i18n %}
+
+{% block header_ext %}
+    <link href="{% static 'css/c3.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/d3.min.js' %}"></script>
+    <script src="{% static 'js/c3.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="card-columns cols-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Répartition par domaine
+                        </div>
+                        <div class="card-block">
+                            <div id="Graph-Domain"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Répartition par catégorie
+                        </div>
+                        <div class="card-block">
+                            <div id="Graph-Category"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-align-justify"></i> Répartition par processus fonctionnel
+                        </div>
+                        <div class="card-block">
+                            <div id="Graph-FuncProcess"></div>
+                        </div>
+                    </div>            
+                </div>
+                <!--/.col-->
+            </div>
+        </div>
+    </div>
+    <!-- /.conainer-fluid -->
+{% endblock %}
+
+{% block page_script %}
+    <script type="text/javascript">
+    $( document ).ready(function() {
+        sendUrl="{% url 'api_tasklist' %}";
+        console.log(sendUrl);
+        var chart = c3.generate({
+            bindto: d3.select('#Graph-Domain'),
+            data: {
+                // iris data from R
+                columns: [
+                    ['data1', 30],
+                    ['data2', 120],
+                ],
+                type : 'pie',
+                onclick: function (d, i) { console.log("onclick", d, i); },
+                onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+            }
+        });
+    });
+
+/*
+    $(".todo-filters").click(function(event) {
+      sendUrl="{% url 'api_get_todo_list' %}";
+      //$("#todolist").attr("data-href");
+      option=$(this).attr("data-href-option");
+      if(option==undefined)
+          option="active"; // all, active, completed
+      $.ajax({
+        url: sendUrl,
+        data: {"option":option},
+        success: function( data ) {
+          $(".aside-menu").html(data);
+        }
+      });
+    });*/
+    </script>
+{% endblock %}
+
+    <!-- Bootstrap and necessary plugins -->

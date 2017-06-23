@@ -10,7 +10,7 @@
         <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,Angular 2,Angular4,Angular 4,jQuery,CSS,HTML,RWD,Dashboard,React,React.js,Vue,Vue.js">
         <link rel="shortcut icon" href="img/favicon.png">
 
-        <title>CoreUI - Open Source Bootstrap Admin Template</title>
+        <title>ProMa - Project Management</title>
 
         <!-- Icons -->
         <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
@@ -20,7 +20,8 @@
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+        {% block header_ext %}{% endblock %}
     </head>
     <body class="app header-fixed sidebar-minimized">
         {% include "frontend/header.html" %}   
@@ -35,5 +36,6 @@
         {% include "frontend/asidemenu.html" %}
         </div>
         {% include "frontend/footer.html" %}
+        {% block page_script %}{% endblock %}
         </body>
 </html>

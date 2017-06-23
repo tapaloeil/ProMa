@@ -35,7 +35,6 @@
     });
 
     $(".todo-filters").click(function(event) {
-      console.log("res");
       sendUrl=$("#todolist").attr("data-href");
       option=$(this).attr("data-href-option");
       if(option==undefined)
