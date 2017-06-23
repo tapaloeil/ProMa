@@ -100,7 +100,7 @@ class NationalDayOff(models.Model):
 	dayoffdate=models.DateField(verbose_name=_("Date"))
 
 	def __str__(self):
-		return self.dayoffdate
+		return '%s' % (self.dayoffdate)
 
 ###########################################################
 

@@ -12,7 +12,7 @@ from django.db.models.signals import pre_save
 
 class TaskCategory(TimeStampedModel):
 	Name=models.CharField(max_length=200, verbose_name=_("Category Name"))
-	Description=models.CharField(max_length=2000, null=True, blank=True, verbose_name=_("Description"))
+	Description=HTMLField(blank=True,null=True, verbose_name=_("Description"))
 	Project=models.ForeignKey(Project, verbose_name=_("Project Name"))
 
 	def __str__(self):
@@ -20,6 +20,15 @@ class TaskCategory(TimeStampedModel):
 
 class TaskDomain(TimeStampedModel):
 	Name=models.CharField(max_length=200, verbose_name=_("Domain Name"))
+	Description=HTMLField(blank=True,null=True, verbose_name=_("Description"))
+	Project=models.ForeignKey(Project, verbose_name=_("Project Name"))
+
+	def __str__(self):
+		return self.Name
+
+class FuncProcess(TimeStampedModel):
+	Name=models.CharField(max_length=300, verbose_name=_("Functional Processus"))
+	Description=HTMLField(blank=True,null=True, verbose_name=_("Description"))
 	Project=models.ForeignKey(Project, verbose_name=_("Project Name"))
 
 	def __str__(self):
@@ -31,9 +40,10 @@ class Task(TimeStampedModel):
 	Description=HTMLField(blank=True,null=True, verbose_name=_("Description"))
 	Category=models.ForeignKey(TaskCategory, verbose_name=_("Category"))
 	Domain=models.ForeignKey(TaskDomain, verbose_name=_("Domain"))
+	FuncProcess=models.ForeignKey(FuncProcess, verbose_name=_("FuncProcess"), blank=True, null=True)
 	PlannedStart=models.DateField(default=datetime.date.today, verbose_name=_("Planned Start"))
 	Baseline=models.DecimalField(decimal_places=2, max_digits=5,default=1, verbose_name=_("Baseline"))
-	PlannedEnd=models.DateField(verbose_name=_("Planned End"))
+	PlannedEnd=models.DateField(verbose_name=_("Planned End"), null=True, blank=True )
 	STATUS_CH=(
 		("To Plan",_("To Plan")),
 		("To Do",_("To Do")),
