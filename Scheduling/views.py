@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .serializers import TaskSerializer
 from .models import Task
-from django.db.models import Count
+from django.db.models import Sum, F
 
 def tasklist(request):
 	tasks = Task.objects.filter(Status="To Plan")
@@ -19,6 +19,8 @@ class api_tasklist(generics.ListCreateAPIView):
 	queryset = Task.objects.all()
 	serializer_class = TaskSerializer
 
-class api_taskgraph(generics.ListCreateAPIView):
-    permissions_classes = (permissions.IsAuthenticated,)
-    queryset=Task.objects.annotate(Count('Domain'))
+class api_taskgraph(APIView):
+	def get(self, request, format=None):
+		col=request.GET
+		tasks=Task.objects.values(data_t=F(col["col"]+"__Name")).annotate(sum=Sum('Baseline'))
+		return Response(tasks)

@@ -49,22 +49,27 @@
 {% block page_script %}
     <script type="text/javascript">
     $( document ).ready(function() {
-        sendUrl="{% url 'api_tasklist' %}";
+        sendUrl="{% url 'api_taskgraph' %}";
         console.log(sendUrl);
-        var chart = c3.generate({
-            bindto: d3.select('#Graph-Domain'),
-            data: {
-                // iris data from R
-                columns: [
-                    ['data1', 30],
-                    ['data2', 120],
-                ],
-                type : 'pie',
-                onclick: function (d, i) { console.log("onclick", d, i); },
-                onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+        $.ajax({
+            url: sendUrl,
+            data: {"col": "Domain"},
+            success: function( data ) {
+                console.log(data);
+                var chart = c3.generate({
+                    bindto: d3.select('#Graph-Domain'),
+                    data: {
+                        // iris data from R
+                        columns: data,
+                        type : 'pie',
+                        onclick: function (d, i) { console.log("onclick", d, i); },
+                        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                    }
+                });
             }
-        });
+          });
+
     });
 
 /*
