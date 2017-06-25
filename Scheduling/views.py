@@ -5,14 +5,17 @@ from rest_framework.response import Response
 from rest_framework import status, generics, permissions
 from .serializers import TaskSerializer
 from .models import Task
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Q
 
 def tasklist(request):
 	tasks = Task.objects.filter(Status="To Plan")
 	return render(request, 'scheduling/tasklist.html', {"tasks":tasks})
 
 def taskgraph(request):
-    return render(request, 'scheduling/taskgraph.html', {})
+	return render(request, 'scheduling/taskgraph.html', {})
+
+def taskgantt(request):
+	return render(request, 'scheduling/taskgantt.html', {})
 
 class api_tasklist(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
@@ -21,6 +24,10 @@ class api_tasklist(generics.ListCreateAPIView):
 
 class api_taskgraph(APIView):
 	def get(self, request, format=None):
-		col=request.GET
-		tasks=Task.objects.values(data_t=F(col["col"]+"__Name")).annotate(sum=Sum('Baseline'))
+		data=request.GET
+		data_filter=request.GET.get('data_filter', None)
+		if data_filter is not None:
+			tasks=Task.objects.filter(~Q(Status=data_filter)).values(data_t=F(data["col"])).annotate(sum=Sum('Baseline'))
+		else:
+			tasks=Task.objects.values(data_t=F(data["col"])).annotate(sum=Sum('Baseline'))
 		return Response(tasks)

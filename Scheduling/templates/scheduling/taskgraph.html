@@ -13,33 +13,48 @@
     <div class="container-fluid">
         <div class="animated fadeIn">
             <div class="row">
-                <div class="card-columns cols-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Répartition par domaine
-                        </div>
-                        <div class="card-block">
-                            <div id="Graph-Domain"></div>
-                        </div>
+            <div class="card-columns">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Répartition globale par domaine
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Répartition par catégorie
-                        </div>
-                        <div class="card-block">
-                            <div id="Graph-Category"></div>
-                        </div>
+                    <div class="card-block">
+                        <div id="Graph-Domain" data-type="Domain__Name"></div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <i class="fa fa-align-justify"></i> Répartition par processus fonctionnel
-                        </div>
-                        <div class="card-block">
-                            <div id="Graph-FuncProcess"></div>
-                        </div>
-                    </div>            
                 </div>
-                <!--/.col-->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Répartition globale par catégorie
+                    </div>
+                    <div class="card-block">
+                        <div id="Graph-Category" data-type="Category__Name"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Reste à faire par domaine
+                    </div>
+                    <div class="card-block">
+                        <div id="Graph-Domain2" data-type="Domain__Name" data-filter="Done"></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Reste à faire par catégorie
+                    </div>
+                    <div class="card-block">
+                        <div id="Graph-Category2" data-type="Category__Name" data-filter="Done"></div>
+                    </div>
+                </div>
+                <!--<div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> Répartition par processus fonctionnel
+                    </div>
+                    <div class="card-block">
+                        <div id="Graph-FuncProcess" data-type="FuncProcess__Name"></div>
+                    </div>
+                </div>   -->         
+            </div>
             </div>
         </div>
     </div>
@@ -50,43 +65,37 @@
     <script type="text/javascript">
     $( document ).ready(function() {
         sendUrl="{% url 'api_taskgraph' %}";
-        console.log(sendUrl);
-        $.ajax({
+        $("div[id^='Graph-']").each( function( index) {
+        sendData = {"col": $(this).attr("data-type") };
+        if($(this).attr("data-filter")!=undefined)
+            sendData["data_filter"]=$(this).attr("data-filter");
+            _this=this.id;
+
+            $.ajax({
             url: sendUrl,
-            data: {"col": "Domain"},
+            async: false,
+            data: sendData,
             success: function( data ) {
-                console.log(data);
-                var chart = c3.generate({
-                    bindto: d3.select('#Graph-Domain'),
+                var formatData=[];
+                var tab={};
+                data.forEach(function(e) {
+                    formatData.push(e.data_t);
+                    tab[e.data_t] = e.sum;
+                }) ;
+                c3.generate({
+                    bindto: d3.select("#"+_this),
                     data: {
-                        // iris data from R
-                        columns: data,
-                        type : 'pie',
-                        onclick: function (d, i) { console.log("onclick", d, i); },
-                        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-                        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                        json: [ tab ],
+                        keys:{
+                            value: formatData,
+                        },
+                        type : 'pie'
                     }
                 });
             }
-          });
-
+            });
+        });
     });
-
-/*
-    $(".todo-filters").click(function(event) {
-      sendUrl="{% url 'api_get_todo_list' %}";
-      //$("#todolist").attr("data-href");
-      option=$(this).attr("data-href-option");
-      if(option==undefined)
-          option="active"; // all, active, completed
-      $.ajax({
-        url: sendUrl,
-        data: {"option":option},
-        success: function( data ) {
-          $(".aside-menu").html(data);
-        }
-      });
-    });*/
     </script>
 {% endblock %}
 

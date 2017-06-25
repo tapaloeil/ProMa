@@ -1,0 +1,41 @@
+{% load static %}
+{% load i18n %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+        <meta name="author" content="Łukasz Holeczek">
+        <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,Angular 2,Angular4,Angular 4,jQuery,CSS,HTML,RWD,Dashboard,React,React.js,Vue,Vue.js">
+        <link rel="shortcut icon" href="img/favicon.png">
+
+        <title>ProMa - Project Management</title>
+
+        <!-- Icons -->
+        <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/simple-line-icons.css' %}" rel="stylesheet">
+
+        <!-- Main styles for this application -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+        {% block header_ext %}{% endblock %}
+    </head>
+    <body class="app header-fixed sidebar-minimized"  ng-controller="MainCtrl">
+        {% include "frontend/header.html" %}   
+        <div class="app-body">
+            {% include "frontend/sidebar.html" %}
+        <!-- Main content -->
+        <main class="main">
+            {% include "frontend/breadcrumb.html" %}
+            {% block content %}
+            {% endblock %}
+        </main> 
+        {% include "frontend/asidemenu.html" %}
+        </div>
+        {% include "frontend/footer.html" %}
+        {% block page_script %}{% endblock %}
+        </body>
+</html>

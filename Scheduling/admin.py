@@ -21,10 +21,10 @@ class TaskFileInline(CompactInline):
 class TaskAdmin(admin.ModelAdmin):
 	view_on_site = False
 	#form = TaskAdminForm
-	list_display=('Name', 'Category', 'Domain', 'FuncProcess', "Complexity", "Priority")
+	list_display=('Name', 'Category', 'Domain', 'Baseline', "Complexity", "Priority")
 	list_filter=('Category__Name', 'Domain__Name', 'FuncProcess__Name', "Status" )
 	search_fields=["Name"]
-	list_editable=('Complexity','Priority')
+	list_editable=('Baseline','Complexity','Priority')
 	fieldsets=(
 		(None,{
 			'fields':(('Name'), ('Category', 'Domain', 'FuncProcess'), ("PlannedStart","Baseline"), ("Complexity", "Priority"), 'Project'),
