@@ -3,6 +3,8 @@ from .models import FuncProcess,TaskCategory,TaskDomain,Task, TaskFile, TaskImag
 from django import forms
 from django.forms.models import ModelForm
 from jet.admin import CompactInline
+from import_export import resources
+from import_export.admin import ImportExportActionModelAdmin
 # Register your models here.
 
 
@@ -17,11 +19,16 @@ class TaskFileInline(CompactInline):
 #		print("updatePlannedEnd")
 
 
+class TaskImportExport(resources.ModelResource):
+    class Meta:
+        model = Task
+        fields = ('id', 'Name', 'Category__Name','Domain__Name','FuncProcess__Name','Baseline', 'Complexity', 'Priority',)
 
-class TaskAdmin(admin.ModelAdmin):
+class TaskAdmin(ImportExportActionModelAdmin):
+	resource_class = TaskImportExport
 	view_on_site = False
 	#form = TaskAdminForm
-	list_display=('Name', 'Category', 'Domain', 'Baseline', "Complexity", "Priority")
+	list_display=('id','Name', 'Category', 'Domain', 'Baseline', "Complexity", "Priority")
 	list_filter=('Category__Name', 'Domain__Name', 'FuncProcess__Name', "Status" )
 	search_fields=["Name"]
 	list_editable=('Baseline','Complexity','Priority')
