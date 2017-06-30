@@ -8592,6 +8592,9 @@ app-root {
     order: -1; }
   .app-body .aside-menu {
     flex: 0 0 250px; }
+  .app-body .aside-menu.minimized{
+    flex: 0 0 30px;
+  }
 
 .header-fixed .app-header {
   position: fixed;
@@ -8599,7 +8602,9 @@ app-root {
   width: 100%; }
 
 .header-fixed .app-body {
-  margin-top: 55px; }
+ /* margin-top: 55px; */
+  margin-top: 0px;
+}
 
 .sidebar-hidden .sidebar {
   margin-left: -200px; }
@@ -8840,6 +8845,94 @@ hr.transparent {
 .navbar .dropdown-toggle .img-avatar {
   height: 35px;
   margin: 0 10px; }
+
+.aside-menu form{
+  padding:0;
+}
+
+.todofilter-ul{
+  padding: 0;
+}
+
+.todofilter-ul li a{
+  font-size:20px;
+}
+
+.todo-menu{
+  list-style: none;
+  margin-top: 12px;
+  margin-bottom: 12px; 
+  padding: 0;
+}
+
+.todo-menu li {
+    display: inline;
+}
+
+.todo-menu li a {
+    color: inherit;
+    margin: 3px;
+    padding: 3px 7px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 30px;
+}
+
+.aside-menu.minimized .todofilter-ul{
+  display:none;
+}
+
+.aside-menu.minimized label.switch{
+  display: none;
+}
+
+.aside-menu.minimized span.switch-handle{
+  display: none;
+}
+
+.aside-menu.minimized span.switch-label{
+  display: none;
+}
+
+.aside-menu.minimized div.callout{
+  padding : 0 !important;
+  margin:0 !important;
+}
+
+.aside-menu.minimized strong{
+    padding: 2px !important;
+    margin: 0 !important;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+.aside-menu.minimized small{
+    display: none;
+}
+
+.aside-menu.minimized div.callout:hover label.switch{
+  display: block;
+}
+
+.aside-menu.minimized div.callout:hover span.switch-handle{
+  display: block;
+}
+
+.aside-menu.minimized div.callout:hover span.switch-label{
+  display: block;
+}
+
+.task_create{
+  color: inherit;
+    margin: 3px;
+    padding: 3px 7px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 30px;
+}
+
 
 *[dir="rtl"] {
   direction: rtl;

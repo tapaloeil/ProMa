@@ -1,0 +1,11 @@
+{% load rest_framework %}
+{% load static %}
+{% load i18n %}
+
+<form class="form-horizontal" action="{% url 'api_taskCreate' %}" method="post">
+    {% csrf_token %}
+    {% render_form serializer template_pack='rest_framework/horizontal' %}
+	<div class="form-group form-actions">
+          <button type="submit" class="btn btn-sm btn-primary">Save</button>
+    </div>   
+</form>

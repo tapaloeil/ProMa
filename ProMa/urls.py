@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import TemplateView
+from django.views.generic.base import RedirectView
 
 admin.site.site_header='ProMa Administration'
 admin.site.site_title='ProMa Administration'
@@ -32,6 +33,7 @@ urlpatterns = i18n_patterns(
     url(r'^frontend/', include('frontend.urls')),
     url(r'^todo/', include('todo.urls')),
     url(r'^scheduling/', include('Scheduling.urls')),
+    url(r'^$', RedirectView.as_view(pattern_name='taskdashboard', permanent=False))
 )
 
 if settings.DEBUG:

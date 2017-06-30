@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'taggit',
     'rosetta',
     'rest_framework',
+    'rest_framework_recursive',
     'crispy_forms',
     'allauth',
     'allauth.account',

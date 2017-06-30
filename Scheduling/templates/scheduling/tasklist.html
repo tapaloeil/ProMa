@@ -32,6 +32,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> Tâches à planifier
+                                    <a href="#" class="task_create" data-toggle="modal" data-target="#largeModal"><i class="icon-plus"></i></a>
                                 </div>
                                 <div class="card-block">
                                     <table class="table table-bordered table-striped table-sm">
@@ -44,6 +45,7 @@
                                                 <th>Baseline</th>
                                                 <th>Complexity</th>
                                                 <th>Priority</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -52,10 +54,13 @@
                                                 <td>{{ task.Name }}</td>
                                                 <td>{{ task.Category }}</td>
                                                 <td>{{ task.Domain }}</td>
-                                                <td>{{ task.PlannedStart }}</td>
+                                                <td>{% if task.PlannedStart %}{{ task.PlannedStart }}{% endif %}</td>
                                                 <td>{{ task.Baseline }}</td>
                                                 <td>{{ task.Complexity }}</td>
                                                 <td>{{ task.Priority }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-secondary task_update" data-toggle="modal" data-target="#largeModal" data-href-id="{{ task.id }}"><i class="icon-pencil"></i></button>
+                                                </td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -83,10 +88,51 @@
                         <!--/.col-->
                     </div>
 
-                    <div ng-view></div>
+                </div>
+            </div>
+            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-primary" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                        </div>
+                        <div class="modal-body"></div>
+                    </div>
                 </div>
             </div>
             <!-- /.conainer-fluid -->
+            <script type="text/javascript">
+                $(".task_update").click(function(event) {
+                    $.ajax({
+                        url: '/fr/scheduling/api/detail/'+ $(this).attr("data-href-id") + '/',
+                        type: 'GET',
+                        success: function(data){
+                             $("#largeModal .modal-body").html(data);
+                        },
+                        failure: function(error){
+                          console.log(error);
+                        }
+                      });
+                   
+                        $("#largeModal .modal-header h4").html("Update task n° " + $(this).attr("data-href-id"));
+                });
+                $(".task_create").click(function(event) {
+                    console.log("test");
+                    $.ajax({
+                        url: '/fr/scheduling/api/create/?format=html',
+                        type: 'GET',
+                        success: function(data){
+                            console.log("data");
+                             $("#largeModal .modal-body").html(data);
+                        },
+                        failure: function(error){
+                          console.log(error);
+                        }
+                      });
+                    $("#largeModal .modal-header h4").html("New task");
+                });
+            </script>
 {% endblock %}
 
     <!-- Bootstrap and necessary plugins -->

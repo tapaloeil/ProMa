@@ -1,8 +1,8 @@
 from django.conf.urls import url
+from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.dashboard, name='dashboard'),
     url(r'^example-coreui/index.html$', views.dashboard, name='dashboard'),
     url(r'^example-coreui/components-buttons.html$', views.components_buttons, name='components-buttons'),
     url(r'^example-coreui/components-social-buttons.html$', views.components_social_buttons, name='components-social-buttons'),

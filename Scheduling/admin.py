@@ -20,9 +20,11 @@ class TaskFileInline(CompactInline):
 
 
 class TaskImportExport(resources.ModelResource):
-    class Meta:
-        model = Task
-        fields = ('id', 'Name', 'Category__Name','Domain__Name','FuncProcess__Name','Baseline', 'Complexity', 'Priority',)
+	class Meta:
+		model = Task
+		fields = ('id', 'Name', 'Category__Name', 'Domain__Name','FuncProcess__Name','Baseline', 'Complexity', 'Priority', 'Dependance', )
+		export_order = ('id', 'Name', 'Category__Name','Domain__Name','FuncProcess__Name','Baseline', 'Complexity', 'Priority', 'Dependance',)
+
 
 class TaskAdmin(ImportExportActionModelAdmin):
 	resource_class = TaskImportExport
@@ -51,7 +53,7 @@ class TaskAdmin(ImportExportActionModelAdmin):
 			qs=Task.objects.latest("created")
 			return getattr(qs, field)
 		except :
-			return ""			
+			return ""
 
 	def get_changeform_initial_data(self, request):
 		return {

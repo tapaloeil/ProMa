@@ -9,6 +9,7 @@ from filer.fields.image import FilerImageField
 from filer.fields.file  import FilerFileField
 from model_utils.models import TimeStampedModel
 from django.db.models.signals import pre_save
+from django.utils.timezone import now
 
 class TaskCategory(TimeStampedModel):
 	Name=models.CharField(max_length=200, verbose_name=_("Category Name"))
@@ -41,9 +42,9 @@ class Task(TimeStampedModel):
 	Category=models.ForeignKey(TaskCategory, verbose_name=_("Category"), related_name="tasks")
 	Domain=models.ForeignKey(TaskDomain, verbose_name=_("Domain"), related_name="tasks")
 	FuncProcess=models.ForeignKey(FuncProcess, verbose_name=_("FuncProcess"), blank=True, null=True, related_name="tasks")
-	PlannedStart=models.DateField(default=datetime.date.today, verbose_name=_("Planned Start"))
+	PlannedStart=models.DateTimeField(default=timezone.now, verbose_name=_("Planned Start"), null=True, blank=True)
 	Baseline=models.DecimalField(decimal_places=2, max_digits=5,default=1, verbose_name=_("Baseline"))
-	PlannedEnd=models.DateField(verbose_name=_("Planned End"), null=True, blank=True )
+	PlannedEnd=models.DateTimeField(verbose_name=_("Planned End"), null=True, blank=True )
 	STATUS_CH=(
 		("To Plan",_("To Plan")),
 		("To Do",_("To Do")),
@@ -52,21 +53,28 @@ class Task(TimeStampedModel):
 		)
 	Status=models.CharField(max_length=30, choices=STATUS_CH, default="To Plan")
 	AssignedTo=models.ForeignKey('auth.User',verbose_name=_("Assigned To"), related_name='tasks')
-	COMPLEXITY_PRIORITY_CH=(
+	COMPLEXITY_CH=(
 		("1","Very Low"),
 		("2","Low"),
 		("3","Medium"),
 		("4", "High"),
 		("5","Very High"),
 		)
-	Complexity=models.CharField(max_length=30, choices=COMPLEXITY_PRIORITY_CH, default="2")
-	Priority=models.CharField(max_length=30, choices=COMPLEXITY_PRIORITY_CH, default="2")
+	PRIORITY_CH=(
+		("5","Very Low"),
+		("4","Low"),
+		("3","Medium"),
+		("2", "High"),
+		("1","Very High"),
+		)
+	Complexity=models.CharField(max_length=30, choices=COMPLEXITY_CH, default="2")
+	Priority=models.CharField(max_length=30, choices=PRIORITY_CH, default="2")
 	ActualStart=models.DateTimeField(blank=True,null=True)
 	ActualEnd=models.DateTimeField(blank=True,null=True)
-	Dependance=models.ManyToManyField("self", related_name="dependances",blank=True)
+	Dependance=models.ManyToManyField("self", symmetrical=False, related_name="dependances+",blank=True)
 
 	def __str__(self):
-		return "%s-%s-%s" % (self.Name, self.Priority, self.PlannedStart)
+		return "%s - %s" % (self.pk,self.Name)
 
 
 class TaskImage(TimeStampedModel):

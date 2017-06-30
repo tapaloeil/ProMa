@@ -66,62 +66,8 @@ angular.module('angularGanttDemoApp')
             $log.info('[Task Event] ' + eventName + ': ' + task.model.name);
         };
 
-        var ganttapi_dependancy = function(eventName, task){
-            var csrftoken = getCookie('csrftoken');
-            $.ajaxSetup({
-              beforeSend: function(xhr, settings) {
-                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                  }
-              }
-            });
-            $.ajax({
-                url: '/fr/scheduling/api/gantt/dep/'+ task.model.to + '/',
-                type: 'GET',
-                async:false,
-                success: function(data){
-                    var pushData=data
-                    var deptab=[];
-                    deptab=pushData.Dependance;
-                    console.log(deptab);
-                    //pushData.Dependance.push(task.task.model.id);
-                    if(pushData.Dependance == "")
-                        pushData.Dependance=task.task.model.id;
-                    else
-                        pushData.Dependance.push(task.task.model.id);
-                    console.log(pushData);
-                    $.ajax({
-                        url: '/fr/scheduling/api/gantt/dep/'+ pushData.id + '/',
-                        type: 'PUT',
-                        async:false,
-                        data: pushData,
-                        success: function(data){
-                            console.log(data);
-                        },
-                        failure: function(error){
-                          console.log(error);
-                        }
-                      });
-                },
-                failure: function(error){
-                  console.log(error);
-                }
-            });
-           /* var data = {'id':  data.model.to ,"Dependance":  data.task.model.id  };
-            console.log(JSON.stringify(data));
-            var csrftoken = getCookie('csrftoken');
-            
-            $.ajax({
-                url: '/fr/scheduling/api/gantt/dep/'+ data.id + '/',
-                type: 'PUT',
-                data: data,
-                success: function(data){
-                    console.log(data);
-                },
-                failure: function(error){
-                  console.log(error);
-                }
-              });*/
+        var ganttapi_dependancy = function(eventName, data){
+            console.log(data);
         };
 
         var ganttapi = function(eventName, task) {

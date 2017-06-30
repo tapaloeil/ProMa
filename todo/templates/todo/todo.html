@@ -1,7 +1,16 @@
 {% load static %}
 			<form action="" method="post">{% csrf_token %}
             <div class="tab-content">
+            	<ul class="todo-menu">
+					<li>
+						<a id="icon-close-todo" data-href-option="" href="#"><i class="icon-close"></i></a>
+					</li>
+					<li>
+						<a data-href-option="" href="#"><i class="icon-plus"></i></a>
+					</li>
+            	</ul>
             	<ul class="todofilter-ul">
+
 					<li>
 						<a class="todo-filters" data-href-option="active" href="#">Active</a>
 					</li>
@@ -31,6 +40,10 @@
             </div>
             </form>
         <script type="text/javascript">
+        	$("#icon-close-todo").click(function(event) {
+        		$("aside.aside-menu").toggleClass('minimized');;
+        	});
+
         	function getCookie(name) {
 			    var cookieValue = null;
 			    if (document.cookie && document.cookie !== '') {

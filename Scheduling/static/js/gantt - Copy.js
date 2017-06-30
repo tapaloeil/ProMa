@@ -66,62 +66,8 @@ angular.module('angularGanttDemoApp')
             $log.info('[Task Event] ' + eventName + ': ' + task.model.name);
         };
 
-        var ganttapi_dependancy = function(eventName, task){
-            var csrftoken = getCookie('csrftoken');
-            $.ajaxSetup({
-              beforeSend: function(xhr, settings) {
-                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                  }
-              }
-            });
-            $.ajax({
-                url: '/fr/scheduling/api/gantt/dep/'+ task.model.to + '/',
-                type: 'GET',
-                async:false,
-                success: function(data){
-                    var pushData=data
-                    var deptab=[];
-                    deptab=pushData.Dependance;
-                    console.log(deptab);
-                    //pushData.Dependance.push(task.task.model.id);
-                    if(pushData.Dependance == "")
-                        pushData.Dependance=task.task.model.id;
-                    else
-                        pushData.Dependance.push(task.task.model.id);
-                    console.log(pushData);
-                    $.ajax({
-                        url: '/fr/scheduling/api/gantt/dep/'+ pushData.id + '/',
-                        type: 'PUT',
-                        async:false,
-                        data: pushData,
-                        success: function(data){
-                            console.log(data);
-                        },
-                        failure: function(error){
-                          console.log(error);
-                        }
-                      });
-                },
-                failure: function(error){
-                  console.log(error);
-                }
-            });
-           /* var data = {'id':  data.model.to ,"Dependance":  data.task.model.id  };
-            console.log(JSON.stringify(data));
-            var csrftoken = getCookie('csrftoken');
-            
-            $.ajax({
-                url: '/fr/scheduling/api/gantt/dep/'+ data.id + '/',
-                type: 'PUT',
-                data: data,
-                success: function(data){
-                    console.log(data);
-                },
-                failure: function(error){
-                  console.log(error);
-                }
-              });*/
+        var ganttapi_dependancy = function(eventName, data){
+            console.log(data);
         };
 
         var ganttapi = function(eventName, task) {
@@ -136,7 +82,7 @@ angular.module('angularGanttDemoApp')
             $.ajax({
                 url: '/fr/scheduling/api/gantt/detail/'+ task.model.id + '/',
                 type: 'PATCH',
-                data: {'id':  task.model.id ,"PlannedStart": moment(task.model.from).utc().format(), "PlannedEnd":moment(task.model.to).utc().format()},
+                data: {'id':  task.model.id ,"PlannedStart": moment(task.model.from).utc().format("YYYY-MM-DD"), "PlannedEnd":moment(task.model.to).utc().format("YYYY-MM-DD")},
                 success: function(data){
                     console.log(data);
                 },
@@ -218,14 +164,14 @@ angular.module('angularGanttDemoApp')
             },
             autoExpand: 'none',
             taskOutOfRange: 'truncate',
-            fromDate: moment().subtract(5, 'days'),
-            toDate: moment().add(30, 'days'),
+            fromDate: moment(new Date(2017, 5, 1, 0, 0, 0)),
+            toDate: moment(new Date(2017, 7, 1, 0, 0, 0)),
             rowContent: '<i class="fa fa-align-justify"></i> {+row.model.name+}',
             taskContent : '<i class="fa fa-tasks"></i> {+task.model.name+}',
             allowSideResizing: true,
             labelsEnabled: true,
             currentDate: 'column',
-            currentDateValue: moment(),
+            currentDateValue: new Date(2017, 6, 13, 11, 20, 0),
             draw: false,
             readOnly: false,
             groupDisplayMode: 'group',
@@ -233,10 +179,16 @@ angular.module('angularGanttDemoApp')
             filterRow: '',
             timeFrames: {
                 'day': {
-                    start: moment('08:00', 'HH:mm'),
-                    end: moment('20:00', 'HH:mm'),
+                    start: moment('9:00', 'HH:mm'),
+                    end: moment('18:00', 'HH:mm'),
                     color: '#ACFFA3',
                     working: true,
+                    default: true
+                },
+                'noon': {
+                    start: moment('12:00', 'HH:mm'),
+                    end: moment('13:00', 'HH:mm'),
+                    working: false,
                     default: true
                 },
                 'closed': {
@@ -268,7 +220,7 @@ angular.module('angularGanttDemoApp')
             },
             timeFramesWorkingMode: 'hidden',
             timeFramesNonWorkingMode: 'cropped',
-            columnMagnet: '60 minutes',
+            columnMagnet: '1 hour',
             timeFramesMagnet: true,
             dependencies: {
                 enabled: true,
@@ -467,19 +419,18 @@ angular.module('angularGanttDemoApp')
             $http.get('/fr/scheduling/api/gantt/').then(function (response){
                 var json = JSON.stringify(response.data).split('"_from":').join('"from":').split("Dependance").join("dependencies");
                 json=JSON.parse(json);
-                $.each(json, function(i, v) {
+                /*$.each(json, function(i, v) {
                    $.each(v.tasks, function (i, v){
                     v.dependencies.forEach(function (result, index, array){
                         var item = {};
-                        item.from=""+result;
+                        item.to=""+result;
                         array.splice(index);
                         array.push(item);
                     });
                    });
-                });
+                });*/
                 $scope.data=json;
             });
-
         };
 
         $scope.reload = function() {
