@@ -39,7 +39,9 @@
                                                 <span>A planifier</span>
                                                 <small class="text-muted">A planifier</small>
                                                 <br>
-                                                <strong class="h4">{{ toplan_overall.count_d }}</strong>
+                                                {% for rep in rep_status %}{% if rep.data_s == "To Plan" %}
+                                                <strong class="h4">{{ rep.count_d }}</strong>
+                                                {% endif %}{% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-2" width="100" height="30"></canvas>
                                                 </div>
@@ -75,7 +77,9 @@
                                                 <span>En attente d'exécution</span>
                                                 <small class="text-muted">En attente d'exécution</small>
                                                 <br>
-                                                <strong class="h4">{{ todo_overall.count_d }}</strong>
+                                                {% for rep in rep_status %}{% if rep.data_s == "To Do" %}
+                                                <strong class="h4">{{ rep.count_d }}</strong>
+                                                {% endif %}{% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-3" width="100" height="30"></canvas>
                                                 </div>
@@ -87,7 +91,9 @@
                                                 <span>En cours d'exécution</span>
                                                 <small class="text-muted">En cours d'exécution</small>
                                                 <br>
-                                                <strong class="h4">{{ inprogress_overall.count_d }}</strong>
+                                                {% for rep in rep_status %}{% if rep.data_s == "In Progress" %}
+                                                <strong class="h4">{{ rep.count_d }}</strong>
+                                                {% endif %}{% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-4" width="100" height="30"></canvas>
                                                 </div>
@@ -123,7 +129,9 @@
                                                 <span>Terminées</span>
                                                 <small class="text-muted">Terminées</small>
                                                 <br>
-                                                <strong class="h4">{{ done_overall.count_d }}</strong>
+                                                {% for rep in rep_status %}{% if rep.data_s == "Done" %}
+                                                <strong class="h4">{{ rep.count_d }}</strong>
+                                                {% endif %}{% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-5" width="100" height="30"></canvas>
                                                 </div>
