@@ -11,6 +11,12 @@ from model_utils import FieldTracker
 from filer.fields.image import FilerImageField
 from django.utils.translation import ugettext_lazy as _
 
+#from allauth.account.adapter import DefaultAccountAdapter
+#
+#class MyAccountAdapter(DefaultAccountAdapter):    
+#    def is_open_for_signup(self, request):
+#        return False
+
 class Project(models.Model):
 	Name=models.CharField(max_length=200, verbose_name=_("Project Name"))
 	Slug=models.SlugField(unique=True)

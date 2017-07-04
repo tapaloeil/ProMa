@@ -42,6 +42,7 @@
                                                 <th>Category</th>
                                                 <th>Domain</th>
                                                 <th>Planned Start</th>
+                                                <th>Assigned To</th>
                                                 <th>Baseline</th>
                                                 <th>Complexity</th>
                                                 <th>Priority</th>
@@ -55,6 +56,7 @@
                                                 <td>{{ task.Category }}</td>
                                                 <td>{{ task.Domain }}</td>
                                                 <td>{% if task.PlannedStart %}{{ task.PlannedStart }}{% endif %}</td>
+                                                <td>{{ task.AssignedTo }}</td>
                                                 <td>{{ task.Baseline }}</td>
                                                 <td>{{ task.Complexity }}</td>
                                                 <td>{{ task.Priority }}</td>

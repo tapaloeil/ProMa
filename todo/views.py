@@ -1,18 +1,14 @@
 #from django.http import HttpResponse, JsonResponse
 #from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import redirect
 from .models import Todo
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-#from django.views.generic import RedirectView
-#from rest_framework import status, authentication, permissions
 from rest_framework.views import APIView
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
-#from rest_framework.parsers import JSONParser
-from rest_framework import status
-from todo.serializers import TodoSerializer,UserSerializer
-from rest_framework import generics
-from rest_framework import permissions
+from todo.serializers import TodoSerializer,UserSerializer,TodoShortSerializer
+from rest_framework import status, generics, permissions
 from .permissions import IsOwner
 # Create your views here.
 
@@ -36,6 +32,20 @@ class api_get_todo_list(APIView):
 		serializer=TodoSerializer(todo, many=True)
 		return Response({'todo':serializer.data})
 
+class api_create_todo(APIView):
+	renderer_classes = [TemplateHTMLRenderer]
+	template_name = "scheduling/api_todo_create.html"
+
+	def get(self, request, format=None):
+		serializer = TodoShortSerializer()
+		return Response({"serializer":serializer}, template_name='scheduling/api_todo_create.html')
+
+	def post(self, request, format="None"):
+		serializer=TodoShortSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save(Owner=self.request.user)
+			return redirect("tasklist")
+		return redirect("tasklist")
 
 class TodoList(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)

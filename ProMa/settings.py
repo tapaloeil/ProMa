@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
     'import_export',
 ]
 
@@ -149,6 +150,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'paris.pet.store.test@gmail.com'
 EMAIL_HOST_PASSWORD = 'Accenture1'
 EMAIL_USE_TLS = True
+
+ACCOUNT_ADAPTER = 'Project.adapter.MyAccountAdapter'
 
 try:
     from .plugin_settings import *

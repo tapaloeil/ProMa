@@ -47,3 +47,19 @@
         }
       });
     });
+
+    $("#icon-add-todo").click(function(event) {
+      console.log("toto");
+        $.ajax({
+            url: '/fr/todo/api/create/?format=html',
+            type: 'GET',
+            success: function(data){
+                console.log(data);
+                 $("#_largeModal .modal-body").html(data);
+            },
+            failure: function(error){
+              console.log(error);
+            }
+          });
+        $("#_largeModal .modal-header h4").html("New todo");
+    });

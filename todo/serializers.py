@@ -21,6 +21,22 @@ class TodoSerializer(serializers.ModelSerializer):
 		instance.save()
 		return instance
 
+class TodoShortSerializer(serializers.ModelSerializer):
+	Owner=serializers.ReadOnlyField(source='Owner.username')
+
+	class Meta:
+		model = Todo
+		fields = ('id', 'Owner', 'Description', 'Priority')
+
+
+	def create(self, validated_data):
+		return Todo.objects.create(**validated_data)
+
+	def update(self,instance,validated_data):
+		instance.Description=validated_data.get('Description', instance.Description)
+		instance.Priority=validated_data.get('Priority', instance.Priority)
+		instance.save()
+		return instance
 
 from django.contrib.auth.models import User
 

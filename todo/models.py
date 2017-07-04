@@ -39,4 +39,5 @@ class Todo(models.Model):
 		if instance.Done==False and instance.Completed != None:
 			instance.Completed=None	
 
+
 pre_save.connect(Todo.pre_save, Todo)

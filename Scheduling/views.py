@@ -34,7 +34,7 @@ def taskdashboard(request):
 		})
 
 def tasklist(request):
-	tasks = Task.objects.filter(Status="To Plan")
+	tasks = Task.objects.all()
 	return render(request, 'scheduling/tasklist.html', {"tasks":tasks})
 
 def taskgraph(request):
@@ -42,6 +42,10 @@ def taskgraph(request):
 
 def taskgantt(request):
 	return render(request, 'scheduling/taskgantt.html', {})
+
+def taskcalendar(request):
+	tasks = Task.objects.all()
+	return render(request, 'scheduling/taskcalendar.html', {"tasks":tasks})
 
 class api_tasklist(generics.ListCreateAPIView):
 	permission_classes = (permissions.IsAuthenticated,)
@@ -111,9 +115,4 @@ class api_taskDetail (APIView):
 			return redirect("tasklist")
 		return redirect("tasklist")
 
-	#def post(self, request, format=None):
-	#	serializer=TaskSerializer(data=request.data)
-	#	if serializer.is_valid():
-	#		serializer.save()
-	#		return Response({"serializer":serializer})
-	#	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

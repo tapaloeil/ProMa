@@ -2,11 +2,9 @@
 {% load static %}
 {% load thumbnail %}
 {% load i18n %}
+{% load definevar %}
 
 {% block header_ext %}
-    <link href="{% static 'css/c3.min.css' %}" rel="stylesheet">
-    <script src="{% static 'js/d3.min.js' %}"></script>
-    <script src="{% static 'js/c3.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -14,11 +12,8 @@
         <div class="animated fadeIn">
              <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            Tableau de bord - Build
-                        </div>
-                        <div class="card-block">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-block">
                             <div class="row">
                                 <div class="col-sm-12 col-lg-4">
                                     <div class="row">
@@ -59,10 +54,19 @@
                                             </div>
                                             <div class="bars">
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    {% for d in rep_domain %}
+                                                        {% if d.data_t == inp.data_t and d.data_s == "In Progress" %}
+                                                        {{ d.data_t }} {{ d.data_s }}
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        {% endif %}
+                                                    {% endfor %}
                                                 </div>
                                                 <div class="progress progress-xs">
+                                                {% for d in rep_domain %}
+                                                        {% if d.data_t == inp.data_t and d.data_s == "Done" %}
                                                     <div class="progress-bar bg-danger" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        {% endif %}
+                                                {% endfor %}
                                                 </div>
                                             </div>
                                         </li>
@@ -77,9 +81,11 @@
                                                 <span>En attente d'exécution</span>
                                                 <small class="text-muted">En attente d'exécution</small>
                                                 <br>
-                                                {% for rep in rep_status %}{% if rep.data_s == "To Do" %}
-                                                <strong class="h4">{{ rep.count_d }}</strong>
-                                                {% endif %}{% endfor %}
+                                                    {% for rep in rep_status %}
+                                                        {% if rep.data_s == "To Do" %}
+                                                            <strong class="h4">{{ rep.count_d }}</strong>
+                                                        {% endif %}
+                                                    {% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-3" width="100" height="30"></canvas>
                                                 </div>
@@ -91,9 +97,11 @@
                                                 <span>En cours d'exécution</span>
                                                 <small class="text-muted">En cours d'exécution</small>
                                                 <br>
-                                                {% for rep in rep_status %}{% if rep.data_s == "In Progress" %}
-                                                <strong class="h4">{{ rep.count_d }}</strong>
-                                                {% endif %}{% endfor %}
+                                                {% for rep in rep_status %}
+                                                    {% if rep.data_s == "In Progress" %}
+                                                        <strong class="h4">{{ rep.count_d }}</strong>
+                                                    {% endif %}
+                                                {% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-4" width="100" height="30"></canvas>
                                                 </div>
@@ -129,9 +137,11 @@
                                                 <span>Terminées</span>
                                                 <small class="text-muted">Terminées</small>
                                                 <br>
-                                                {% for rep in rep_status %}{% if rep.data_s == "Done" %}
-                                                <strong class="h4">{{ rep.count_d }}</strong>
-                                                {% endif %}{% endfor %}
+                                                {% for rep in rep_status %}
+                                                    {% if rep.data_s == "Done" %}
+                                                        <strong class="h4">{{ rep.count_d }}</strong>
+                                                    {% endif %}
+                                                {% endfor %}
                                                 <div class="chart-wrapper">
                                                     <canvas id="sparkline-chart-5" width="100" height="30"></canvas>
                                                 </div>
@@ -161,10 +171,10 @@
                                             </div>
                                             <div class="bars">
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="34" aria-valuemin="0" aria-valuemax="{{ inp.sum_d }}"></div>
                                                 </div>
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="{{ inp.sum_d }}"></div>
                                                 </div>
                                             </div>
                                         </li>
@@ -176,244 +186,7 @@
                             <!--/.row-->
                             <br>
                             <div id="timeline"></div>
-                            <!--<table class="table table-responsive table-hover table-outline mb-0">
-                                <thead class="thead-default">
-                                    <tr>
-                                        <th class="text-center"><i class="icon-people"></i>
-                                        </th>
-                                        <th>User</th>
-                                        <th class="text-center">Country</th>
-                                        <th>Usage</th>
-                                        <th class="text-center">Payment Method</th>
-                                        <th>Activity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="avatar">
-                                                <img src="{% static 'img/avatars/1.jpg' %}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                                <span class="avatar-status badge-success"></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>Yiorgos Avraamu</div>
-                                            <div class="small text-muted">
-                                                <span>New</span>| Registered: Jan 1, 2015
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <img src="{% static 'img/flags/USA.png' %}" alt="USA" style="height:24px;">
-                                        </td>
-                                        <td>
-                                            <div class="clearfix">
-                                                <div class="float-left">
-                                                    <strong>50%</strong>
-                                                </div>
-                                                <div class="float-right">
-                                                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="fa fa-cc-mastercard" style="font-size:24px"></i>
-                                        </td>
-                                        <td>
-                                            <div class="small text-muted">Last login</div>
-                                            <strong>10 sec ago</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="avatar">
-                                                <img src="{% static 'img/avatars/2.jpg' %}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                                <span class="avatar-status badge-danger"></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>Avram Tarasios</div>
-                                            <div class="small text-muted">
-
-                                                <span>Recurring</span>| Registered: Jan 1, 2015
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <img src="{% static 'img/flags/Brazil.png' %}" alt="Brazil" style="height:24px;">
-                                        </td>
-                                        <td>
-                                            <div class="clearfix">
-                                                <div class="float-left">
-                                                    <strong>10%</strong>
-                                                </div>
-                                                <div class="float-right">
-                                                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="fa fa-cc-visa" style="font-size:24px"></i>
-                                        </td>
-                                        <td>
-                                            <div class="small text-muted">Last login</div>
-                                            <strong>5 minutes ago</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="avatar">
-                                                <img src="{% static 'img/avatars/3.jpg' %}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                                <span class="avatar-status badge-warning"></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>Quintin Ed</div>
-                                            <div class="small text-muted">
-                                                <span>New</span>| Registered: Jan 1, 2015
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <img src="{% static 'img/flags/India.png' %}" alt="India" style="height:24px;">
-                                        </td>
-                                        <td>
-                                            <div class="clearfix">
-                                                <div class="float-left">
-                                                    <strong>74%</strong>
-                                                </div>
-                                                <div class="float-right">
-                                                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 74%" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="fa fa-cc-stripe" style="font-size:24px"></i>
-                                        </td>
-                                        <td>
-                                            <div class="small text-muted">Last login</div>
-                                            <strong>1 hour ago</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="avatar">
-                                                <img src="{% static 'img/avatars/4.jpg' %}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                                <span class="avatar-status badge-default"></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>Enéas Kwadwo</div>
-                                            <div class="small text-muted">
-                                                <span>New</span>| Registered: Jan 1, 2015
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <img src="{% static 'img/flags/France.png' %}" alt="France" style="height:24px;">
-                                        </td>
-                                        <td>
-                                            <div class="clearfix">
-                                                <div class="float-left">
-                                                    <strong>98%</strong>
-                                                </div>
-                                                <div class="float-right">
-                                                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 98%" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="fa fa-paypal" style="font-size:24px"></i>
-                                        </td>
-                                        <td>
-                                            <div class="small text-muted">Last login</div>
-                                            <strong>Last month</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="avatar">
-                                                <img src="{% static 'img/avatars/5.jpg' %}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                                <span class="avatar-status badge-success"></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>Agapetus Tadeáš</div>
-                                            <div class="small text-muted">
-                                                <span>New</span>| Registered: Jan 1, 2015
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <img src="{% static 'img/flags/Spain.png' %}" alt="Spain" style="height:24px;">
-                                        </td>
-                                        <td>
-                                            <div class="clearfix">
-                                                <div class="float-left">
-                                                    <strong>22%</strong>
-                                                </div>
-                                                <div class="float-right">
-                                                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 22%" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="fa fa-google-wallet" style="font-size:24px"></i>
-                                        </td>
-                                        <td>
-                                            <div class="small text-muted">Last login</div>
-                                            <strong>Last week</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="avatar">
-                                                <img src="{% static 'img/avatars/6.jpg' %}" class="img-avatar" alt="admin@bootstrapmaster.com">
-                                                <span class="avatar-status badge-danger"></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>Friderik Dávid</div>
-                                            <div class="small text-muted">
-                                                <span>New</span>| Registered: Jan 1, 2015
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <img src="{% static 'img/flags/Poland.png' %}" alt="Poland" style="height:24px;">
-                                        </td>
-                                        <td>
-                                            <div class="clearfix">
-                                                <div class="float-left">
-                                                    <strong>43%</strong>
-                                                </div>
-                                                <div class="float-right">
-                                                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                                                </div>
-                                            </div>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 43%" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="text-center">
-                                            <i class="fa fa-cc-amex" style="font-size:24px"></i>
-                                        </td>
-                                        <td>
-                                            <div class="small text-muted">Last login</div>
-                                            <strong>Yesterday</strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>-->
+                            
                         </div>
                     </div>
                 </div>
@@ -436,21 +209,17 @@
         var dataTable = new google.visualization.DataTable();
 
         dataTable.addColumn({ type: 'string', id: 'Processus' });
-        dataTable.addColumn({ type: 'string', id: 'Name' });
+       // dataTable.addColumn({ type: 'string', id: 'Name' });
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
         dataTable.addRows([
-          /*[ 'Washington', new Date(1789, 3, 30), new Date(1797, 2, 4) ],
-          [ 'Adams',      new Date(1797, 2, 4),  new Date(1801, 2, 4) ],
-          [ 'Jefferson',  new Date(1801, 2, 4),  new Date(1809, 2, 4) ]*/
-          // new Date({{ inp.min_d|date:'Y' }}, {{ inp.min_d|date:'n' }}, {{ inp.min_d|date:'j' }}),  new Date({{ inp.max_d|date:'Y' }}, {{ inp.max_d|date:'n' }}, {{ inp.max_d|date:'j' }})],
           {% for inp in all_funcprocess %}
-            [ '{{ inp.data_t }}', '{{ inp.data_t }}', new Date({{ inp.min_d|date:'Y' }}, {{ inp.min_d|date:'n' }}, {{ inp.min_d|date:'j' }}),  new Date({{ inp.max_d|date:'Y' }}, {{ inp.max_d|date:'n' }}, {{ inp.max_d|date:'j' }})],
+            [ '{{ inp.data_t }}',  new Date({{ inp.min_d|date:'Y' }}, {{ inp.min_d|date:'m-1' }}, {{ inp.min_d|date:'j' }}),  new Date({{ inp.max_d|date:'Y' }}, {{ inp.max_d|date:'m-1' }}, {{ inp.max_d|date:'j' }})],
           {% endfor %}
           ]);
 
         var options = {
-          timeline: { showRowLabels: false },
+          timeline: { rowLabelStyle: { fontSize: 11 }, barLabelStyle: { fontSize: 6 } },
           enableInteractivity:false
         };
 

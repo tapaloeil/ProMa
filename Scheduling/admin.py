@@ -22,8 +22,8 @@ class TaskFileInline(CompactInline):
 class TaskImportExport(resources.ModelResource):
 	class Meta:
 		model = Task
-		fields = ('id', 'Name', 'Category__Name', 'Domain__Name','FuncProcess__Name','Baseline', 'Complexity', 'Priority', 'Dependance', )
-		export_order = ('id', 'Name', 'Category__Name','Domain__Name','FuncProcess__Name','Baseline', 'Complexity', 'Priority', 'Dependance',)
+		fields = ('id', 'Name', 'Category__Name', 'Domain__Name','FuncProcess__Name',"PlannedStart",'Baseline', 'Complexity', 'Priority', 'Dependance', "AssignedTo__username" )
+		export_order = ('id', 'Name', 'Category__Name','Domain__Name','FuncProcess__Name',"PlannedStart",'Baseline', 'Complexity', 'Priority', 'Dependance', "AssignedTo__username")
 
 
 class TaskAdmin(ImportExportActionModelAdmin):

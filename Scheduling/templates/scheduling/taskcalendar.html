@@ -1,0 +1,25 @@
+{% extends 'ganttbase.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load i18n %}
+
+{% block header_ext %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="{% static 'css/fullcalendar.css' %}">
+    <script src="{% static 'js/angular.js' %}"></script>
+    <script src="{% static 'js/angular-ui-bootstrap.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="{% static 'js/fullcalendar.js' %}"></script>
+    <script src="{% static 'js/gcal.js' %}"></script>
+    <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/calendarDemo.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<body ng-app="calendarDemoApp" ng-strict-di>
+    <div ui-calendar="uiConfig.calendar" class="span8 calendar" ng-model="eventSources"></div> 
+
+
+</body>
+{% endblock %}

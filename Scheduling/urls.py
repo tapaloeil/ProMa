@@ -11,6 +11,7 @@ urlpatterns=[
 	url(r'^dashboard/$', views.taskdashboard, name="taskdashboard"),
     url(r'^graph/$', views.taskgraph, name='taskgraph'),
     url(r'^gantt/$', views.taskgantt, name='taskgantt'),
+    url(r'^calendar/$', views.taskcalendar, name='taskcalendar'),
 	url(r'^api/list/$', api_tasklist.as_view(), name="api_tasklist"),
 	url(r'^api/create/$', api_taskCreate.as_view(), name="api_taskCreate"),
 	url(r'^api/detail/(?P<pk>[0-9]+)/$',api_taskDetail.as_view(), name="api_taskDetail"),

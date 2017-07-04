@@ -9,6 +9,16 @@
  * Main module of the application.
  */
 
+var holidays = [
+    {from: new Date(2017,6,14,8,0,0), to: new Date(2017,6,14,20,0,0), name: '14 juillet'},
+    {from: new Date(2017,7,15,8,0,0), to: new Date(2017,7,15,20,0,0), name: '15 aout'},
+    {from: new Date(2017,10,1,8,0,0), to: new Date(2017,10,1,20,0,0), name: '1 novembre'},
+    {from: new Date(2017,10,11,8,0,0), to: new Date(2017,10,11,20,0,0), name: '11 novembre'},
+    {from: new Date(2017,11,25,8,0,0), to: new Date(2017,11,25,20,0,0), name: 'noel'},
+    {from: new Date(2018,0,1,8,0,0), to: new Date(2018,0,1,20,0,0), name: 'nouvel an'},
+    {from: new Date(2017,7,21), to: new Date(2017,8,11), name:"vacances Noémie", classes:["vacances1"]},
+    {from: new Date(2017,9,15), to: new Date(2017,10,4), name:"vacances Sylvain", classes:["vacances2"]}
+];
 
 var myapp = angular.module('angularGanttDemoApp', [
     'gantt', // angular-gantt.
@@ -218,8 +228,8 @@ angular.module('angularGanttDemoApp')
             },
             autoExpand: 'none',
             taskOutOfRange: 'truncate',
-            fromDate: moment().subtract(5, 'days'),
-            toDate: moment().add(30, 'days'),
+            fromDate: new Date(2017, 6, 10),//moment().subtract(5, 'days'),
+            toDate: new Date(2017,10,15),//moment().add(90, 'days'),
             rowContent: '<i class="fa fa-align-justify"></i> {+row.model.name+}',
             taskContent : '<i class="fa fa-tasks"></i> {+task.model.name+}',
             allowSideResizing: true,
@@ -258,12 +268,6 @@ angular.module('angularGanttDemoApp')
                         return date.isoWeekday() === 6 || date.isoWeekday() === 7;
                     },
                     targets: ['weekend']
-                },
-                '11-november': {
-                    evaluator: function(date) {
-                        return date.month() === 10 && date.date() === 11;
-                    },
-                    targets: ['holiday']
                 }
             },
             timeFramesWorkingMode: 'hidden',
@@ -351,13 +355,6 @@ angular.module('angularGanttDemoApp')
                     // When gantt is ready, load data.
                     // `data` attribute could have been used too.
                     $scope.load();
-
-                    /*$http.get('/scheduling/api/gantt/').then(function (response){
-                        var json = JSON.parse(JSON.stringify(response.data).split('"_from":').join('"from":'));
-                        $scope.data=json;
-                    });*/
-
-                    //$scope.data = getHttpData();
 
                     // Add some DOM events
                     /*api.directives.on.new($scope, function(directiveName, directiveScope, element) {
@@ -479,6 +476,7 @@ angular.module('angularGanttDemoApp')
                 });
                 $scope.data=json;
             });
+            $scope.timespans=holidays;
 
         };
 
@@ -619,111 +617,3 @@ angular.module('angularGanttDemoApp')
         });
 */
     }]);
-
-'use strict';
-
-/**
- * @ngdoc service
- * @name angularGanttDemoApp.Sample
- * @description
- * # Sample
- * Service in the angularGanttDemoApp.
- */
-angular.module('angularGanttDemoApp')
-    .service('Sample', function Sample() {
-        return {
-            getSampleData: function() {
-                return [
-                        // Order is optional. If not specified it will be assigned automatically
-                        {name: 'Milestones', height: '3em', sortable: false, drawTask: false, classes: 'gantt-row-milestone', color: '#45607D', tasks: [
-                            // Dates can be specified as string, timestamp or javascript date object. The data attribute can be used to attach a custom object
-                            {name: 'Kickoff', color: '#93C47D', from: '2013-10-07T09:00:00', to: '2013-10-07T10:00:00', data: 'Can contain any custom data or object'},
-                            {name: 'Concept approval', color: '#93C47D', from: new Date(2013, 9, 18, 18, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0), est: new Date(2013, 9, 16, 7, 0, 0), lct: new Date(2013, 9, 19, 0, 0, 0)},
-                            {name: 'Development finished', color: '#93C47D', from: new Date(2013, 10, 15, 18, 0, 0), to: new Date(2013, 10, 15, 18, 0, 0)},
-                            {name: 'Shop is running', color: '#93C47D', from: new Date(2013, 10, 22, 12, 0, 0), to: new Date(2013, 10, 22, 12, 0, 0)},
-                            {name: 'Go-live', color: '#93C47D', from: new Date(2013, 10, 29, 16, 0, 0), to: new Date(2013, 10, 29, 16, 0, 0)}
-                        ], data: 'Can contain any custom data or object'},
-                        {name: 'Status meetings', tasks: [
-                            {name: 'Demo #1', color: '#9FC5F8', from: new Date(2013, 9, 25, 15, 0, 0), to: new Date(2013, 9, 25, 18, 30, 0)},
-                            {name: 'Demo #2', color: '#9FC5F8', from: new Date(2013, 10, 1, 15, 0, 0), to: new Date(2013, 10, 1, 18, 0, 0)},
-                            {name: 'Demo #3', color: '#9FC5F8', from: new Date(2013, 10, 8, 15, 0, 0), to: new Date(2013, 10, 8, 18, 0, 0)},
-                            {name: 'Demo #4', color: '#9FC5F8', from: new Date(2013, 10, 15, 15, 0, 0), to: new Date(2013, 10, 15, 18, 0, 0)},
-                            {name: 'Demo #5', color: '#9FC5F8', from: new Date(2013, 10, 24, 9, 0, 0), to: new Date(2013, 10, 24, 10, 0, 0)}
-                        ]},
-                        {name: 'Kickoff', movable: {allowResizing: false}, tasks: [
-                            {name: 'Day 1', color: '#9FC5F8', from: new Date(2013, 9, 7, 9, 0, 0), to: new Date(2013, 9, 7, 17, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}, movable: false},
-                            {name: 'Day 2', color: '#9FC5F8', from: new Date(2013, 9, 8, 9, 0, 0), to: new Date(2013, 9, 8, 17, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}},
-                            {name: 'Day 3', color: '#9FC5F8', from: new Date(2013, 9, 9, 8, 30, 0), to: new Date(2013, 9, 9, 12, 0, 0),
-                                progress: {percent: 100, color: '#3C8CF8'}}
-                        ]},
-                        {name: 'Create concept', tasks: [
-                            {name: 'Create concept', priority: 20, content: '<i class="fa fa-cog" ng-click="scope.handleTaskIconClick(task.model)"></i> {{task.model.name}}', color: '#F1C232', from: new Date(2013, 9, 10, 8, 0, 0), to: new Date(2013, 9, 16, 18, 0, 0), est: new Date(2013, 9, 8, 8, 0, 0), lct: new Date(2013, 9, 18, 20, 0, 0),
-                                progress: 100, sections: {
-                                    items: [
-                                        {name: 'Section #1', classes:['section-1'], from: new Date(2013, 9, 10, 8, 0, 0), to: new Date(2013, 9, 13, 8, 0, 0)},
-                                        {name: 'Section #2', classes:['section-2'], from: new Date(2013, 9, 13, 8, 0, 0), to: new Date(2013, 9, 15, 8, 0, 0)},
-                                        {name: 'Section #3', classes:['section-3'], from: new Date(2013, 9, 15, 8, 0, 0), to: new Date(2013, 9, 16, 18, 0, 0)}
-                                    ]
-                                }
-                            }
-                        ]},
-                        {name: 'Finalize concept', tasks: [
-                            {id: 'Finalize concept', name: 'Finalize concept', priority: 10, color: '#F1C232', from: new Date(2013, 9, 17, 8, 0, 0), to: new Date(2013, 9, 18, 18, 0, 0),
-                                progress: 100}
-                        ]},
-                        {name: 'Development', children: ['Sprint 1', 'Sprint 2', 'Sprint 3', 'Sprint 4'], content: '<i class="fa fa-file-code-o" ng-click="scope.handleRowIconClick(row.model)"></i> {{row.model.name}}'},
-                        {name: 'Sprint 1', tooltips: false, tasks: [
-                            {id: 'Product list view', name: 'Product list view', color: '#F1C232', from: new Date(2013, 9, 21, 8, 0, 0), to: new Date(2013, 9, 25, 15, 0, 0),
-                                progress: 25, dependencies: [{to: 'Order basket'}, {from: 'Finalize concept'}]}
-                        ]},
-                        {name: 'Sprint 2', tasks: [
-                            {id: 'Order basket', name: 'Order basket', color: '#F1C232', from: new Date(2017, 6, 28, 8, 0, 0), to: new Date(2017,7, 1, 15, 0, 0),
-                                dependencies: {to: 'Checkout'} }
-                        ]},
-                        {name: 'Sprint 3', tasks: [
-                            {id: 'Checkout', name: 'Checkout', color: '#F1C232', from: new Date(2017,7, 4, 8, 0, 0), to: new Date(2017,7, 8, 15, 0, 0),
-                                dependencies: {to: 'Login & Signup & Admin Views'} }
-                        ]},
-                        {name: 'Sprint 4', tasks: [
-                            {id: 'Login & Signup & Admin Views', name: 'Login & Signup & Admin Views', color: '#F1C232', from: new Date(2017,7, 11, 8, 0, 0), to: new Date(2017,7, 15, 15, 0, 0),
-                                dependencies: []}
-                        ]},
-                        {name: 'Hosting'},
-                        {name: 'Setup', tasks: [
-                            {id: 'HW', name: 'HW', color: '#F1C232', from: new Date(2017,7, 18, 8, 0, 0), to: new Date(2017,7, 18, 12, 0, 0)}
-                        ]},
-                        {name: 'Config', tasks: [
-                            {id: 'SW / DNS/ Backups', name: 'SW / DNS/ Backups', color: '#F1C232', from: new Date(2017,7, 18, 12, 0, 0), to: new Date(2017,7, 21, 18, 0, 0)}
-                        ]},
-                        {name: 'Server', parent: 'Hosting', children: ['Setup', 'Config']},
-                        {name: 'Deployment', parent: 'Hosting', tasks: [
-                            {name: 'Depl. & Final testing', color: '#F1C232', from: new Date(2017,7, 21, 8, 0, 0), to: new Date(2017,7, 22, 12, 0, 0), 'classes': 'gantt-task-deployment'}
-                        ]},
-                        {name: 'Workshop', tasks: [
-                            {name: 'On-side education', color: '#F1C232', from: new Date(2017,7, 24, 9, 0, 0), to: new Date(2017,7, 25, 15, 0, 0)}
-                        ]},
-                        {name: 'Content', tasks: [
-                            {name: 'Supervise content creation', color: '#F1C232', from: new Date(2017,7, 26, 9, 0, 0), to: new Date(2017,7, 29, 16, 0, 0)}
-                        ]},
-                        {name: 'Documentation', tasks: [
-                            {name: 'Technical/User documentation', color: '#F1C232', from: new Date(2017,7, 26, 8, 0, 0), to: new Date(2017,7, 28, 18, 0, 0)}
-                        ]}
-                    ];
-            },
-            getSampleTimespans: function() {
-                return [
-                        /*{
-                            from: new Date(2017, 6, 21, 8, 0, 0),
-                            to: new Date(2017, 6, 25, 15, 0, 0),
-                            name: 'Sprint 2 Timespan'
-                            //priority: undefined,
-                            //classes: [],
-                            //data: undefined
-                        }*/
-                    ];
-            }
-        };
-    })
-;

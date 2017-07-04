@@ -1,6 +1,21 @@
+{% load admin_urls %}
 <div class="sidebar">
     <nav class="sidebar-nav">
         <ul class="nav">
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'account_logout' %}"><i class="icon-power"></i> Logout</a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'account_login' %}"><i class="icon-power"></i> Login</a>
+                {% endif %}
+            </li>
+            {% if user.is_staff or user.is_superuser %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin:Scheduling_task_changelist' %}"><i class="icon-settings"></i> Administration</a>
+            </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+            {% if user.get_username == "sylvain.hebert" %}
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-puzzle"></i> Components</a>
                 <ul class="nav-dropdown-items">
@@ -52,15 +67,17 @@
                     </li>
                 </ul>
             </li>
-            
-            
+            {% endif %}
+            {% endif %}
+            {% if user.is_authenticated %}
             <li class="nav-item nav-dropdown">
-                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-calendar"></i> Scheduling</a>
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-compass"></i> Scheduling</a>
 
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'taskdashboard' %}" target="_top"><i class="icon-grid"></i> Dashboard</a>
                     </li>
+                    {% if user.is_staff or user.is_superuser %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'tasklist' %}" target="_top"><i class="icon-list"></i> List</a>
                     </li>
@@ -70,9 +87,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'taskgraph' %}" target="_top"><i class="icon-chart"></i> Graph</a>
                     </li>
+                    {% endif %}
                 </ul>
             </li>
-
+            {% endif %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'taskcalendar' %}"><i class="icon-calendar"></i> Calendrier</a>
+            </li>
+            {% endif %}
         </ul>
     </nav>
 </div>
