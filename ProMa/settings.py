@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "todo",
     "Scheduling",
     "frontend",
+    "EnvMgmt",
 
     'tinymce',
     'easy_thumbnails',
